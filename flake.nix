@@ -8,38 +8,51 @@
     };
   };
 
-    outputs = inputs:
-    inputs.flake-parts.lib.mkFlake { inherit inputs; } {
-      systems = [ "x86_64-linux" "x86_64-darwin" "aarch64-linux" "aarch64-darwin" ];
-      perSystem = { config, self', pkgs, lib, system, ... }:
-        let
-          runtimeDeps = with pkgs; [
-          ];
-          buildDeps = with pkgs; [
-          ];
-          devDeps = [
-            inputs.openspec.packages.${system}.default
-          ];
-          libPath = with pkgs; lib.makeLibraryPath [
-          ];
+  outputs = inputs:
+    let
+      flake = inputs.flake-parts.lib.mkFlake { inherit inputs; } {
+        systems = [ "x86_64-linux" "x86_64-darwin" "aarch64-linux" "aarch64-darwin" ];
+        perSystem = { config, self', pkgs, lib, system, ... }:
+          let
+            runtimeDeps = with pkgs; [ ];
+            buildDeps = with pkgs; [ ];
+            devDeps = [ inputs.openspec.packages.${system}.default ];
+            libPath = with pkgs; lib.makeLibraryPath [ ];
 
-          mkDevShell = pkgs.mkShell {
+            mkDevShell = pkgs.mkShell {
               shellHook = ''
                 echo "┌────────────────────────────────────────────────────────────┐"
-                echo "│  Project - Development Environment                         │"
+                echo "│  Template hub - Development Environment                    │"
                 echo "└────────────────────────────────────────────────────────────┘"
                 echo ""
+                echo "Development commands:"
+                echo "  ./tests/check-openspec-template.sh   # run OpenSpec template tests"
+                echo "  ./tests/check-all-templates.sh       # run all template tests"
+                echo "  nix flake new -t path:.#openspec <dir>   # create a new OpenSpec project"
                 echo ""
-                echo "Build Commands:"
-                echo ""
-                echo "Test & Lint:"
+                echo "OpenSpec (this repo):"
+                echo "  openspec list                        # list changes"
+                echo "  openspec status --change \"<name>\"   # change status"
                 echo ""
               '';
               buildInputs = runtimeDeps;
               nativeBuildInputs = buildDeps ++ devDeps;
             };
-        in {
-          devShells.default = mkDevShell;
+          in {
+            devShells.default = mkDevShell;
+          };
+      };
+    in
+    flake // {
+      templates = {
+        openspec = {
+          path = ./templates/openspec;
+          description = "OpenSpec project with Nix devShell";
         };
+        default = {
+          path = ./templates/openspec;
+          description = "OpenSpec project with Nix devShell";
+        };
+      };
     };
 }
