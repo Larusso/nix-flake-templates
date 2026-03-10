@@ -35,7 +35,7 @@ More templates (e.g. Rust, rust-openspec) are planned; see [TEMPLATE_PLAN.md](TE
 nix develop
 ```
 
-Then run `./tests/check-openspec-template.sh` or `./tests/check-all-templates.sh` to verify templates.
+Then run `./tests/run-all.sh` (or `./tests/openspec/test.sh` for the OpenSpec template only) to verify templates. CI runs these tests on push and PR (Linux, matrix per template); a scheduled workflow keeps template flake locks up to date.
 
 ## Reference
 
