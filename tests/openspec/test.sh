@@ -1,12 +1,9 @@
 #!/usr/bin/env bash
-# Check that the OpenSpec template builds and that flake content works as specified:
-# - Template flake check passes (devShell builds)
-# - A project created from the template has openspec on PATH in the devShell
-# - Generated project flake does not expose templates output
-# Run from repo root: ./tests/check-openspec-template.sh
-# Optional: SKIP_CONTENT_TESTS=1 to only run flake check (faster, skips nix flake new + develop)
+# OpenSpec template: flake check + content tests.
+# Run from repo root: ./tests/openspec/test.sh
+# Optional: SKIP_CONTENT_TESTS=1 to only run flake check (faster).
 set -euo pipefail
-REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$REPO_ROOT"
 
 echo "==> OpenSpec template: flake check"
@@ -22,7 +19,6 @@ TMPDIR="${TMPDIR:-/tmp}"
 TEST_DIR=$(mktemp -d "${TMPDIR}/openspec-template-test.XXXXXXXX")
 trap 'rm -rf "$TEST_DIR"' EXIT
 
-# Use the real workflow: hub flake + template name. path: avoids git resolution in dirty trees.
 nix flake new "$TEST_DIR" -t "path:$REPO_ROOT#openspec"
 
 echo "  -> openspec in PATH in devShell"
