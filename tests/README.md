@@ -11,7 +11,7 @@ Each template has its own folder under `tests/` with a single `test.sh` script. 
 
 From the **repository root**:
 
-- **One template** (e.g. OpenSpec): `./tests/openspec/test.sh`
+- **One template** (e.g. OpenSpec): `./tests/openspec/test.sh` or (Rust): `./tests/rust/test.sh`
 - **All templates**: `./tests/run-all.sh`
 - **Build-only** (skip content tests): `SKIP_CONTENT_TESTS=1 ./tests/openspec/test.sh`
 
@@ -22,6 +22,10 @@ CI runs the same tests on push and PR (matrix, one job per template, Linux only)
 - **openspec** (`tests/openspec/test.sh`)
   - **Build**: The template flake evaluates and its default devShell builds (`nix flake check`).
   - **Content**: `nix flake new -t path:repo#openspec <temp-dir>` is run; then we verify (1) `openspec` is on PATH in the devShell, and (2) the generated project flake does not expose a `templates` output (projects stay consumers).
+
+- **rust** (`tests/rust/test.sh`)
+  - **Build**: The template flake evaluates and its default devShell builds (`nix flake check`).
+  - **Content**: `nix flake new -t path:repo#rust <temp-dir>` is run; then we verify (1) `rustc` and `cargo` are on PATH in the devShell, and (2) the generated project flake does not expose a `templates` output.
 
 ## Adding tests for a new template
 

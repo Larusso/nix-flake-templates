@@ -49,6 +49,10 @@
           path = ./templates/openspec;
           description = "OpenSpec project with Nix devShell";
         };
+        rust = {
+          path = ./templates/rust;
+          description = "Rust project with Nix devShell (rust-overlay)";
+        };
         default = {
           path = ./templates/openspec;
           description = "OpenSpec project with Nix devShell";
