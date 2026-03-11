@@ -32,18 +32,14 @@ jobs:
         run: ./tests/run-all.sh
 
       - name: Create PR if there are changes
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          if git diff --quiet && git diff --staged --quiet; then
-            echo "No changes to template flake locks"
-            exit 0
-          fi
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          branch="chore/update-template-flakes-$(date +%Y%m%d-%H%M%S)"
-          git checkout -b "$branch"
-          git add templates/
-          git commit -m "chore: update template flake locks"
-          git push origin "$branch"
-          gh pr create --base main --head "$branch" --title "chore: update template flake locks" --body "Automated update of template flake inputs and locks. Tests passed in this workflow. Merge is handled by GitHub settings (e.g. auto-merge when required checks pass)."
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: chore/update-template-flakes
+          commit-message: chore: update template flake locks
+          title: chore: update template flake locks
+          body: >
+            Automated update of template flake inputs and locks. Tests passed in
+            this workflow. Merge is handled by GitHub settings (e.g. auto-merge
+            when required checks pass).
+          add-paths: |
+            templates/**
