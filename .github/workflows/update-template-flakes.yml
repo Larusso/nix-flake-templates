@@ -35,8 +35,8 @@ jobs:
         uses: peter-evans/create-pull-request@v6
         with:
           branch: chore/update-template-flakes
-          commit-message: chore: update template flake locks
-          title: chore: update template flake locks
+          commit-message: "chore: update template flake locks"
+          title: "chore: update template flake locks"
           body: >
             Automated update of template flake inputs and locks. Tests passed in
             this workflow. Merge is handled by GitHub settings (e.g. auto-merge

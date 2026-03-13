@@ -26,8 +26,11 @@ nix flake new -t <this-repo>#<template-name> <target-dir>
 | Template   | Description                          |
 |-----------|--------------------------------------|
 | `openspec` / `default` | OpenSpec project with Nix devShell |
+| `rust` | Rust devShell (stable, nightly, msrv) — no build output |
+| `rust-bin` | Rust binary project — `nix build` produces a runnable binary |
+| `rust-lib` | Rust library project — `nix build` produces a shared library |
 
-More templates (e.g. Rust, rust-openspec) are planned; see [TEMPLATE_PLAN.md](TEMPLATE_PLAN.md).
+See [TEMPLATE_PLAN.md](TEMPLATE_PLAN.md) for combination templates (e.g. rust-openspec).
 
 ## Develop this repo
 
