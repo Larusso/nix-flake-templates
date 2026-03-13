@@ -10,7 +10,7 @@
 - [x] 2.1 Create `templates/rust-bin/` directory with `.envrc` (`use flake`) and `.gitignore` (`.direnv`, `target`)
 - [x] 2.2 Create `templates/rust-bin/Cargo.toml` (minimal binary crate: name `my-project`, edition 2021)
 - [x] 2.3 Create `templates/rust-bin/src/main.rs` (hello-world main function)
-- [x] 2.4 Create `templates/rust-bin/flake.nix` with: inputs (nixpkgs, flake-parts, rust-overlay), explicit `pkgs` import with overlay in `let` block, runtimeDeps/buildDeps/devDeps/libPath with comments, `makeWrapper` in buildDeps, `cargoToml` binding (active), `rustPackage` function with `buildRustPackage` + `wrapProgram` + `libPath` (active), `mkDevShell`, stable/nightly devShells, commented msrv block, `packages.default = rustPackage ""`, `checks.devShell-builds`, `_module.args.pkgs`, no `templates` output
+- [x] 2.4 Create `templates/rust-bin/flake.nix` with: inputs (nixpkgs, flake-parts, rust-overlay), explicit `pkgs` import with overlay in `let` block, runtimeDeps/buildDeps/devDeps/libPath with comments, `makeWrapper` in buildDeps, `cargoToml` binding (active), `rustPackage` function with `buildRustPackage` + `wrapProgram` + `libPath` (active), `mkDevShell`, stable/nightly devShells, commented msrv block, `packages.default = rustPackage []`, `checks.devShell-builds`, `_module.args.pkgs`, no `templates` output
 - [x] 2.5 Generate `templates/rust-bin/Cargo.lock` (stage files, run `nix develop` + `cargo generate-lockfile`)
 - [x] 2.6 Run `nix flake check` on `templates/rust-bin/` and verify it passes
 - [x] 2.7 Create `templates/rust-bin/README.md` (binary-focused: quick start, devShells, adding deps/features, multi-binary workspace pattern, msrv opt-in)

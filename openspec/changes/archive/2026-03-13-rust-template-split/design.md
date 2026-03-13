@@ -40,7 +40,7 @@ All three templates share the same base pattern (AGENTS.md: runtimeDeps, buildDe
 
 ### 3. rust-bin template includes makeWrapper and active buildRustPackage
 
-**Decision:** `templates/rust-bin/flake.nix` includes `makeWrapper` in `buildDeps`, an active `cargoToml` binding, an active `rustPackage` function using `buildRustPackage` with `wrapProgram` + `libPath`, and `packages.default = rustPackage ""`. Ships with `Cargo.toml` (binary crate), `src/main.rs`, and `Cargo.lock`.
+**Decision:** `templates/rust-bin/flake.nix` includes `makeWrapper` in `buildDeps`, an active `cargoToml` binding, an active `rustPackage` function using `buildRustPackage` with `wrapProgram` + `libPath`, and `packages.default = rustPackage []`. Ships with `Cargo.toml` (binary crate), `src/main.rs`, and `Cargo.lock`.
 
 **Rationale:** This is the exact pattern from the reference flake. `makeWrapper` is required for `wrapProgram`; having it in buildDeps by default avoids a confusing build failure. The scaffold means `nix build` works immediately.
 
