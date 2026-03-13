@@ -74,8 +74,8 @@ To build multiple binaries from a Cargo workspace:
 
 3. In `flake.nix`, duplicate or adjust the `rustPackage` function and expose multiple package outputs:
    ```nix
-   packages.cli = rustPackage "";
-   packages.server = rustPackage "";
+   packages.cli = rustPackage [];
+   packages.server = rustPackage [];
    packages.default = self'.packages.cli;
    ```
 

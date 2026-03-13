@@ -47,6 +47,7 @@
             pkgs.mkShell {
               shellHook = ''
                 export RUST_SRC_PATH=${pkgs.rustPlatform.rustLibSrc}
+              '' + lib.optionalString (libPath != "") ''
                 export LD_LIBRARY_PATH="${libPath}''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
               '';
               buildInputs = runtimeDeps;
