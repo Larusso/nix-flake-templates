@@ -49,6 +49,7 @@
             pkgs.mkShell {
               shellHook = ''
                 export RUST_SRC_PATH=${pkgs.rustPlatform.rustLibSrc}
+                export LD_LIBRARY_PATH="${libPath}''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
               '';
               buildInputs = runtimeDeps;
               nativeBuildInputs = buildDeps ++ devDeps ++ [ rustc ];

@@ -50,6 +50,7 @@
             pkgs.mkShell {
               shellHook = ''
                 export RUST_SRC_PATH=${pkgs.rustPlatform.rustLibSrc}
+                export LD_LIBRARY_PATH="${libPath}''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
               '';
               buildInputs = runtimeDeps;
               nativeBuildInputs = buildDeps ++ devDeps ++ [ rustc ];
@@ -64,7 +65,7 @@
           # msrvToolchain = pkgs.rust-bin.stable.${msrv}.default;
 
           # --- Binary package output -----------------------------------------------
-          rustPackage = features:
+          rustPackage = buildFeatures:
             (pkgs.makeRustPlatform {
               cargo = pkgs.rust-bin.stable.latest.minimal;
               rustc = pkgs.rust-bin.stable.latest.minimal;
@@ -72,7 +73,7 @@
               inherit (cargoToml.package) name version;
               src = ./.;
               cargoLock.lockFile = ./Cargo.lock;
-              buildFeatures = features;
+              inherit buildFeatures;
               buildInputs = runtimeDeps;
               nativeBuildInputs = buildDeps;
               doCheck = false;
@@ -92,7 +93,7 @@
           # Uncomment when Cargo.toml has package.rust-version:
           # devShells.msrv = mkDevShell msrvToolchain;
 
-          packages.default = rustPackage "";
+          packages.default = rustPackage [];
 
           checks.devShell-builds = mkDevShell stableToolchain;
         };
