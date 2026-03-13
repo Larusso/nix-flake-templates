@@ -26,8 +26,8 @@
                 echo "└────────────────────────────────────────────────────────────┘"
                 echo ""
                 echo "Development commands:"
-                echo "  ./tests/check-openspec-template.sh   # run OpenSpec template tests"
-                echo "  ./tests/check-all-templates.sh       # run all template tests"
+                echo "  ./tests/openspec/test.sh             # run OpenSpec template tests"
+                echo "  ./tests/run-all.sh                   # run all template tests"
                 echo "  nix flake new -t path:.#openspec <dir>   # create a new OpenSpec project"
                 echo ""
                 echo "OpenSpec (this repo):"
@@ -60,6 +60,18 @@
         rust-lib = {
           path = ./templates/rust-lib;
           description = "Rust library project with Nix devShell and shared library output";
+        };
+        rust-openspec = {
+          path = ./templates/rust-openspec;
+          description = "Rust devShell with OpenSpec in the same Nix development environment";
+        };
+        rust-bin-openspec = {
+          path = ./templates/rust-bin-openspec;
+          description = "Rust binary project with OpenSpec in the same Nix development environment";
+        };
+        rust-lib-openspec = {
+          path = ./templates/rust-lib-openspec;
+          description = "Rust library project with OpenSpec in the same Nix development environment";
         };
         default = {
           path = ./templates/openspec;
