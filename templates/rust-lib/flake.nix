@@ -18,13 +18,15 @@
             overlays = [ (import inputs.rust-overlay) ];
           };
 
+          cargoToml = builtins.fromTOML (builtins.readFile ./Cargo.toml);
+
           # Runtime dependencies: libraries the compiled binary or tools link against.
           # Examples: openssl, p7zip, zlib
           runtimeDeps = with pkgs; [
           ];
 
           # Build-time dependencies: tools needed only during compilation.
-          # Examples: pkg-config, rustPlatform.bindgenHook, makeWrapper
+          # Examples: pkg-config, rustPlatform.bindgenHook
           buildDeps = with pkgs; [
           ];
 
@@ -55,11 +57,35 @@
           stableToolchain = pkgs.rust-bin.stable.latest.default;
           nightlyToolchain = pkgs.rust-bin.selectLatestNightlyWith (toolchain: toolchain.default);
 
-          # --- MSRV (uncomment when you have a Cargo.toml) ------------------------
+          # --- MSRV (uncomment when Cargo.toml has package.rust-version) -----------
           #
-          # cargoToml = builtins.fromTOML (builtins.readFile ./Cargo.toml);
           # msrv = cargoToml.package.rust-version;
           # msrvToolchain = pkgs.rust-bin.stable.${msrv}.default;
+
+          # --- Library package output ----------------------------------------------
+          #
+          # Builds a shared library (.so on Linux, .dylib on macOS).
+          # The Cargo.toml must have [lib] crate-type = ["cdylib"].
+          rustLibPackage =
+            (pkgs.makeRustPlatform {
+              cargo = pkgs.rust-bin.stable.latest.minimal;
+              rustc = pkgs.rust-bin.stable.latest.minimal;
+            }).buildRustPackage {
+              inherit (cargoToml.package) name version;
+              src = ./.;
+              cargoLock.lockFile = ./Cargo.lock;
+              buildInputs = runtimeDeps;
+              nativeBuildInputs = buildDeps;
+              doCheck = false;
+              installPhase = ''
+                runHook preInstall
+                mkdir -p $out/lib
+                find target/ -maxdepth 3 \( -name "*.so" -o -name "*.dylib" -o -name "*.a" \) \
+                  ! -path "*/deps/*" \
+                  -exec cp {} $out/lib/ \;
+                runHook postInstall
+              '';
+            };
 
         in {
           _module.args.pkgs = pkgs;
@@ -68,8 +94,10 @@
           devShells.stable = mkDevShell stableToolchain;
           devShells.nightly = mkDevShell nightlyToolchain;
 
-          # Uncomment when you have a Cargo.toml with package.rust-version:
+          # Uncomment when Cargo.toml has package.rust-version:
           # devShells.msrv = mkDevShell msrvToolchain;
+
+          packages.default = rustLibPackage;
 
           checks.devShell-builds = mkDevShell stableToolchain;
         };
