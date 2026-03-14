@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Run all template tests by iterating over tests/*/test.sh.
+# Run all template tests, including any newly added template folders under tests/*/.
 # Run from repo root: ./tests/run-all.sh
 set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"

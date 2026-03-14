@@ -11,7 +11,7 @@ Each template has its own folder under `tests/` with a single `test.sh` script. 
 
 From the **repository root**:
 
-- **One template** (e.g. OpenSpec): `./tests/openspec/test.sh`, (Rust devShell): `./tests/rust/test.sh`, (Rust binary): `./tests/rust-bin/test.sh`, (Rust library): `./tests/rust-lib/test.sh`
+- **One template** (e.g. OpenSpec): `./tests/openspec/test.sh`, (Rust devShell): `./tests/rust/test.sh`, (Rust binary): `./tests/rust-bin/test.sh`, (Rust library): `./tests/rust-lib/test.sh`, (Rust + OpenSpec): `./tests/rust-openspec/test.sh`, (Rust bin + OpenSpec): `./tests/rust-bin-openspec/test.sh`, (Rust lib + OpenSpec): `./tests/rust-lib-openspec/test.sh`
 - **All templates**: `./tests/run-all.sh`
 - **Build-only** (skip content tests): `SKIP_CONTENT_TESTS=1 ./tests/openspec/test.sh`
 
@@ -34,6 +34,18 @@ CI runs the same tests on push and PR (matrix, one job per template, Linux only)
 - **rust-lib** (`tests/rust-lib/test.sh`)
   - **Build**: The template flake evaluates and its default devShell builds (`nix flake check`).
   - **Content**: `nix flake new -t path:repo#rust-lib <temp-dir>` is run; then we verify (1) `rustc` and `cargo` are on PATH (stable + nightly), (2) `nix build` produces library files (`.so`/`.dylib`) in `result/lib/`, and (3) the generated project flake does not expose a `templates` output.
+
+- **rust-openspec** (`tests/rust-openspec/test.sh`)
+  - **Build**: The template flake evaluates and its default devShell builds (`nix flake check`).
+  - **Content**: `nix flake new -t path:repo#rust-openspec <temp-dir>` is run; then we verify (1) `rustc`, `cargo`, and `openspec` are on PATH (stable + nightly), and (2) the generated project flake does not expose a `templates` output.
+
+- **rust-bin-openspec** (`tests/rust-bin-openspec/test.sh`)
+  - **Build**: The template flake evaluates and its default devShell builds (`nix flake check`).
+  - **Content**: `nix flake new -t path:repo#rust-bin-openspec <temp-dir>` is run; then we verify (1) `rustc`, `cargo`, and `openspec` are on PATH (stable + nightly), (2) `nix build` produces a runnable binary, and (3) the generated project flake does not expose a `templates` output.
+
+- **rust-lib-openspec** (`tests/rust-lib-openspec/test.sh`)
+  - **Build**: The template flake evaluates and its default devShell builds (`nix flake check`).
+  - **Content**: `nix flake new -t path:repo#rust-lib-openspec <temp-dir>` is run; then we verify (1) `rustc`, `cargo`, and `openspec` are on PATH (stable + nightly), (2) `nix build` produces library files (`.so`/`.dylib`/`.a`) in `result/lib/`, and (3) the generated project flake does not expose a `templates` output.
 
 ## Adding tests for a new template
 

@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        template: [openspec, rust, rust-bin, rust-lib]
+        template: [openspec, rust, rust-bin, rust-lib, rust-openspec, rust-bin-openspec, rust-lib-openspec]
     steps:
       - uses: actions/checkout@v4
 
