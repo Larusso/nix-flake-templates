@@ -21,6 +21,8 @@ jobs:
 
       - name: Update flake locks in each template and helper flake
         run: |
+          echo "==> Starting flake lock updates"
+
           for dir in templates/*/; do
             if [[ -f "$dir/flake.nix" ]]; then
               echo "==> Updating $dir"
@@ -33,10 +35,53 @@ jobs:
               (cd "$dir" && nix flake update)
             fi
           done
-          nix flake lock
 
-      - name: Run repo flake tests
-        run: ./tests/run-all.sh
+          echo "==> Refreshing root flake.lock and helper-flake path inputs"
+          nix flake lock \
+            --update-input oh-my-cloudecode \
+            --update-input oh-my-codex
+          echo "==> Finished flake lock updates"
+
+      - name: Run repo flake tests with hash auto-heal
+        run: |
+          set -euo pipefail
+
+          attempts=0
+          max_attempts=5
+
+          while true; do
+            attempts=$((attempts + 1))
+            log_file="$(mktemp)"
+            echo "==> Test attempt ${attempts}/${max_attempts}"
+            echo "==> Running ./tests/run-all.sh"
+
+            set +e
+            ./tests/run-all.sh 2>&1 | tee "$log_file"
+            test_status=${PIPESTATUS[0]}
+            set -e
+
+            if [[ "$test_status" -eq 0 ]]; then
+              echo "==> Repo flake tests passed on attempt ${attempts}"
+              rm -f "$log_file"
+              break
+            fi
+
+            echo "==> Repo flake tests failed on attempt ${attempts}"
+
+            if [[ "$attempts" -ge "$max_attempts" ]]; then
+              echo "Reached maximum retry count (${max_attempts}) while trying to auto-heal hash mismatches" >&2
+              exit 1
+            fi
+
+            echo "==> Attempting fixed-output hash auto-heal from captured log"
+            if ! ./scripts/autoheal-fixed-output-hashes.sh "$log_file"; then
+              echo "Tests failed and no auto-healable fixed-output hash mismatches were found" >&2
+              exit 1
+            fi
+
+            rm -f "$log_file"
+            echo "==> Re-running repo flake tests after auto-healing fixed-output hashes"
+          done
 
       - name: Create PR if there are changes
         uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1
