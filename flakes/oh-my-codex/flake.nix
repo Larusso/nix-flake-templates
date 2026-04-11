@@ -24,7 +24,7 @@
             pname = "oh-my-codex";
             inherit version src;
 
-            npmDepsHash = "sha256-Zh2EuEFwnICJDe+xu4QzDrHoKbq4QY4ixMer26orIYs=";
+            npmDepsHash = "sha256-JIbYDQcHGR5IxuU/C6QUOVCuHZfDvh7di6eJ4l8ju3s=";
 
             nativeBuildInputs = [ pkgs.makeWrapper ];
 

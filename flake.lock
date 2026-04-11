@@ -150,11 +150,11 @@
     "oh-my-claudecode-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1775722875,
-        "narHash": "sha256-KGPzk6shWVHbeoOTI7tDvnGITgvR/gJuY/ArffeipGY=",
+        "lastModified": 1775883056,
+        "narHash": "sha256-jo8Ug6Z9ELKtDZEL1uO9jHDHxD73UGdWW6tm8YUPEaM=",
         "owner": "Yeachan-Heo",
         "repo": "oh-my-claudecode",
-        "rev": "7b4a9e0435b7913de8942fa5a11d54eed7f1b85e",
+        "rev": "04655ee24207f367fee785b5eb33b21234d9e0e3",
         "type": "github"
       },
       "original": {
@@ -198,11 +198,11 @@
     "oh-my-codex-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1775837728,
-        "narHash": "sha256-L1icaO6nM68NcuemC53s+2gjvHPt+OtGPR5Y4F3gwuU=",
+        "lastModified": 1775880258,
+        "narHash": "sha256-z+zVMTulppaGKBusqnVQB0YkgO/7scp9xeZ9BokTPv8=",
         "owner": "Yeachan-Heo",
         "repo": "oh-my-codex",
-        "rev": "982a7546b7b42518d47de2ac53fa2b47ebd670a4",
+        "rev": "d5975af01a4bb8a7d3c68d4131b31029566380ac",
         "type": "github"
       },
       "original": {

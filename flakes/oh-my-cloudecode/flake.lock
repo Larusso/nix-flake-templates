@@ -52,11 +52,11 @@
     "oh-my-claudecode-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1775722875,
-        "narHash": "sha256-KGPzk6shWVHbeoOTI7tDvnGITgvR/gJuY/ArffeipGY=",
+        "lastModified": 1775883056,
+        "narHash": "sha256-jo8Ug6Z9ELKtDZEL1uO9jHDHxD73UGdWW6tm8YUPEaM=",
         "owner": "Yeachan-Heo",
         "repo": "oh-my-claudecode",
-        "rev": "7b4a9e0435b7913de8942fa5a11d54eed7f1b85e",
+        "rev": "04655ee24207f367fee785b5eb33b21234d9e0e3",
         "type": "github"
       },
       "original": {

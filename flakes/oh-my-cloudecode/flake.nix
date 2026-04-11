@@ -33,7 +33,7 @@
             pname = "oh-my-cloudecode";
             inherit version src;
 
-            npmDepsHash = "sha256-Tge6Fme3j0asQUeIYjUn49xaQBHdTQCVwTP+5JGej5s=";
+            npmDepsHash = "sha256-zHpnO5zankzuYJQfpQADt1lAaMzItTQi7tJcAjpPSRE=";
 
             dontNpmBuild = true; # dist/ is already built in the upstream repo
 
