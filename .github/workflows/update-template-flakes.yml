@@ -1,4 +1,4 @@
-name: Update template flake locks
+name: Update repo flake locks
 
 on:
   schedule:
@@ -19,7 +19,7 @@ jobs:
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@v16
 
-      - name: Update flake locks in each template
+      - name: Update flake locks in each template and helper flake
         run: |
           for dir in templates/*/; do
             if [[ -f "$dir/flake.nix" ]]; then
@@ -27,19 +27,28 @@ jobs:
               (cd "$dir" && nix flake update)
             fi
           done
+          for dir in flakes/*/; do
+            if [[ -f "$dir/flake.nix" ]]; then
+              echo "==> Updating $dir"
+              (cd "$dir" && nix flake update)
+            fi
+          done
+          nix flake lock
 
-      - name: Run template tests
+      - name: Run repo flake tests
         run: ./tests/run-all.sh
 
       - name: Create PR if there are changes
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1
         with:
-          branch: chore/update-template-flakes
-          commit-message: "chore: update template flake locks"
-          title: "chore: update template flake locks"
+          branch: chore/update-repo-flakes
+          commit-message: "chore: update repo flake locks"
+          title: "chore: update repo flake locks"
           body: >
-            Automated update of template flake inputs and locks. Tests passed in
+            Automated update of template and helper-flake inputs and locks. Tests passed in
             this workflow. Merge is handled by GitHub settings (e.g. auto-merge
             when required checks pass).
           add-paths: |
+            flake.lock
             templates/**
+            flakes/**

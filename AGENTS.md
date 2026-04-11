@@ -1,15 +1,16 @@
-# Personal Nix project template hub
+# Personal Nix project template and helper-flake hub
 
-This repo is a **personal Nix project template hub**: a collection of Nix flake templates for bootstrapping new projects (OpenSpec, and later Rust, rust-openspec, etc.).
+This repo is a **personal Nix project template and helper-flake hub**: a collection of Nix flake templates for bootstrapping new projects plus a small set of standalone helper flakes that are kept here because a separate repository would be unnecessary overhead.
 
 ## Mission
 
-Provide reusable Nix flake templates so new projects can be created with `nix flake new -t <this-repo>#<template-name> <target-dir>` and get a consistent devShell and structure.
+Provide reusable Nix flake templates so new projects can be created with `nix flake new -t <this-repo>#<template-name> <target-dir>` and get a consistent devShell and structure, while also hosting independent helper flakes under `flakes/`.
 
 ## Current state
 
-- The root flake is currently a single **OpenSpec** devShell (no template outputs yet).
-- A multi-template layout (thin root flake + `templates/<name>/` directories) is planned; see [TEMPLATE_PLAN.md](TEMPLATE_PLAN.md) for the strategy and combination approach (e.g. rust-openspec).
+- Templates live under `templates/` and are exposed via the root flake's `templates` output for `nix flake new`.
+- Helper flakes live under `flakes/` and remain independently usable as standalone flakes.
+- Selected helper-flake packages may be re-exported from the root flake for easier installation, but helper flakes are not templates.
 
 ## Conventions
 
@@ -17,6 +18,8 @@ Provide reusable Nix flake templates so new projects can be created with `nix fl
 - In each template’s flake, keep the **runtimeDeps** / **buildDeps** / **devDeps** / **libPath** pattern for clarity (see **Template flake base pattern** below).
 - Templates produce normal project flakes: the generated project must **not** expose a `templates` output (so it stays a consumer, not a template hub).
 - Every template MUST include a **README.md** that explains what the template provides, how to get started after creating a project, and any setup steps specific to the template's language/toolchain (e.g. for Rust: how to set up a binary crate, library crate, multi-binary workspace, or mixed crate).
+- Helper flakes live under `flakes/<name>/` as independent flakes. They are not `nix flake new` templates.
+- Helper flakes MAY be re-exported from the root flake as `packages` for convenience, but their direct subflake path remains valid and primary.
 
 ### Template flake base pattern
 

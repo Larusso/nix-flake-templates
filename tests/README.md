@@ -1,21 +1,21 @@
-# Template tests
+# Repo flake tests
 
-Each template has its own folder under `tests/` with a single `test.sh` script. A runner script iterates over all template folders and runs their tests.
+Each checked flake surface in the repo has its own folder under `tests/` with a single `test.sh` script. A runner script iterates over all folders and runs their tests.
 
 ## Layout
 
-- **`tests/<name>/test.sh`** — one script per template (e.g. `tests/openspec/test.sh`). Run from repo root: `./tests/openspec/test.sh`.
+- **`tests/<name>/test.sh`** — one script per checked surface (template or helper flake), for example `tests/openspec/test.sh` or `tests/oh-my-codex/test.sh`. Run from repo root: `./tests/<name>/test.sh`.
 - **`tests/run-all.sh`** — iterates over `tests/*/` and runs `./tests/<name>/test.sh` for each. Run from repo root: `./tests/run-all.sh`.
 
 ## Running tests
 
 From the **repository root**:
 
-- **One template** (e.g. OpenSpec): `./tests/openspec/test.sh`, (Rust devShell): `./tests/rust/test.sh`, (Rust binary): `./tests/rust-bin/test.sh`, (Rust library): `./tests/rust-lib/test.sh`, (Rust + OpenSpec): `./tests/rust-openspec/test.sh`, (Rust bin + OpenSpec): `./tests/rust-bin-openspec/test.sh`, (Rust lib + OpenSpec): `./tests/rust-lib-openspec/test.sh`
-- **All templates**: `./tests/run-all.sh`
+- **One checked flake**: `./tests/openspec/test.sh`, `./tests/rust/test.sh`, `./tests/oh-my-cloudecode/test.sh`, `./tests/oh-my-codex/test.sh`, etc.
+- **All repo flake checks**: `./tests/run-all.sh`
 - **Build-only** (skip content tests): `SKIP_CONTENT_TESTS=1 ./tests/openspec/test.sh`
 
-CI runs the same tests on push and PR (matrix, one job per template, Linux only). Template flake locks are kept up to date by a scheduled workflow that opens and auto-merges a PR when updates pass tests.
+CI runs the same tests on push and PR (matrix, one job per checked flake surface, Linux only). Template and helper-flake lock files are kept up to date by a scheduled workflow that opens a PR when updates pass tests.
 
 ## What is tested
 
@@ -47,12 +47,20 @@ CI runs the same tests on push and PR (matrix, one job per template, Linux only)
   - **Build**: The template flake evaluates and its default devShell builds (`nix flake check`).
   - **Content**: `nix flake new -t path:repo#rust-lib-openspec <temp-dir>` is run; then we verify (1) `rustc`, `cargo`, and `openspec` are on PATH (stable + nightly), (2) `nix build` produces library files (`.so`/`.dylib`/`.a`) in `result/lib/`, and (3) the generated project flake does not expose a `templates` output.
 
-## Adding tests for a new template
+- **oh-my-cloudecode** (`tests/oh-my-cloudecode/test.sh`)
+  - **Direct flake**: `nix flake show path:repo/flakes/oh-my-cloudecode`, `nix build path:repo/flakes/oh-my-cloudecode#default`, and `nix build path:repo/flakes/oh-my-cloudecode#oh-my-cloudecode-files`.
+  - **Root re-export**: `nix build path:repo#oh-my-cloudecode` and `nix build path:repo#oh-my-cloudecode-files`.
 
-1. Add a **template directory** under `templates/<name>/` with a Nix flake (and a committed **`flake.lock`** so new projects get a reproducible, known-good set of inputs).
-2. Add **`tests/<name>/test.sh`** that runs `nix flake check ./templates/<name>` and any content tests from the repo root. Use `REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"` so the script works when run as `./tests/<name>/test.sh`.
-3. **CI**: Add `<name>` to the matrix in `.github/workflows/nix-tests.yml` (and the update workflow discovers templates via `templates/*/`). No change needed to `run-all.sh` — it discovers `tests/*/test.sh` automatically.
+- **oh-my-codex** (`tests/oh-my-codex/test.sh`)
+  - **Direct flake**: `nix flake show path:repo/flakes/oh-my-codex`, `nix build path:repo/flakes/oh-my-codex#default`, and `nix build path:repo/flakes/oh-my-codex#oh-my-codex-files`.
+  - **Root re-export**: `nix build path:repo#oh-my-codex` and `nix build path:repo#oh-my-codex-files`.
 
-## Lock files in templates
+## Adding tests for a new template or helper flake
 
-Each template that is a Nix flake should have a **committed `flake.lock`** so that `nix flake new` gives new projects a reproducible, stable set of inputs. A scheduled workflow updates these locks periodically and auto-merges the PR when tests pass, so templates stay current without going stale.
+1. Add a flake directory under `templates/<name>/` or `flakes/<name>/` with a committed `flake.lock`.
+2. Add **`tests/<name>/test.sh`** that runs the appropriate evaluation/build/content checks from the repo root. Use `REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"` so the script works when run as `./tests/<name>/test.sh`.
+3. **CI**: Add `<name>` to the matrix in `.github/workflows/nix-tests.yml`. Keep the update workflow aligned with whatever flake directories need automated lock updates. No change needed to `run-all.sh` — it discovers `tests/*/test.sh` automatically.
+
+## Lock files in repo flakes
+
+Each template or helper flake that is a Nix flake should have a **committed `flake.lock`** so consumers get a reproducible, stable set of inputs. A scheduled workflow updates these locks periodically and opens a PR when tests pass, so repo flakes stay current without going stale.

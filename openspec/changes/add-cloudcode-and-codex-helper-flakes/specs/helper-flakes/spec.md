@@ -48,12 +48,12 @@ Helper flakes under `flakes/` SHALL remain independently usable as standalone fl
 
 ### Requirement: Root flake re-exports concrete helper-flake install packages
 
-For helper flakes that this repository explicitly promotes for easy installation, the root flake SHALL re-export selected package outputs while keeping those helper flakes independent. This change SHALL cover `oh-my-cloudcode` and `oh-my-codex`, including their default package and files-only package outputs.
+For helper flakes that this repository explicitly promotes for easy installation, the root flake SHALL re-export selected package outputs while keeping those helper flakes independent. This change SHALL cover `oh-my-cloudecode` and `oh-my-codex`, including their default package and files-only package outputs.
 
-#### Scenario: Root flake re-exports cloudcode and codex packages
+#### Scenario: Root flake re-exports cloudecode and codex packages
 
 - **WHEN** the root flake is evaluated after this change
-- **THEN** it exposes package re-exports for the default and files-only outputs of both `oh-my-cloudcode` and `oh-my-codex`
+- **THEN** it exposes package re-exports for the default and files-only outputs of both `oh-my-cloudecode` and `oh-my-codex`
 
 ### Requirement: Repository documentation explains helper-flake scope
 

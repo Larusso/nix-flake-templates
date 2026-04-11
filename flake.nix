@@ -6,6 +6,12 @@
       url = "github:Fission-AI/OpenSpec";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    oh-my-cloudecode = {
+      url = "path:./flakes/oh-my-cloudecode";
+    };
+    oh-my-codex = {
+      url = "path:./flakes/oh-my-codex";
+    };
   };
 
   outputs = inputs:
@@ -40,6 +46,12 @@
             };
           in {
             devShells.default = mkDevShell;
+            packages = {
+              oh-my-cloudecode = inputs.oh-my-cloudecode.packages.${system}.default;
+              oh-my-cloudecode-files = inputs.oh-my-cloudecode.packages.${system}.oh-my-cloudecode-files;
+              oh-my-codex = inputs.oh-my-codex.packages.${system}.default;
+              oh-my-codex-files = inputs.oh-my-codex.packages.${system}.oh-my-codex-files;
+            };
           };
       };
     in

@@ -10,7 +10,7 @@ That means the design problem is mainly about repository boundaries and document
 
 This change also has two concrete targets:
 
-- `oh-my-cloudcode`, imported from the existing repo `Larusso/oh-my-claudecode-flake` and renamed from `claudecode` to `cloudcode` for the hosted helper-flake identity in this repo
+- `oh-my-cloudecode`, imported from the existing repo `Larusso/oh-my-claudecode-flake` and renamed from `claudecode` to `cloudecode` for the hosted helper-flake identity in this repo
 - `oh-my-codex`, a new helper flake for the upstream project `Yeachan-Heo/oh-my-codex`
 
 The upstreams are similar in intent but not identical in packaging shape. The existing `oh-my-claudecode` flake already packages both a full CLI build and a files-only output. `oh-my-codex` is a mixed Node/Rust project with a distributable `omx` CLI and reusable on-disk assets, so the new flake should follow the same broad pattern where practical: a directly usable helper flake with clear package outputs and no dependence on the root template interface.
@@ -23,7 +23,7 @@ The upstreams are similar in intent but not identical in packaging shape. The ex
 - Preserve the current `templates/` layout and template interface unchanged.
 - Document the distinction between templates and helper flakes at the repo level.
 - Make it clear that helper flakes are hosted in the repo without being exposed as template outputs.
-- Add `flakes/oh-my-cloudcode/` by importing the existing `oh-my-claudecode` flake content and renaming its hosted identity to `oh-my-cloudcode`.
+- Add `flakes/oh-my-cloudecode/` by importing the existing `oh-my-claudecode` flake content and renaming its hosted identity to `oh-my-cloudecode`.
 - Add `flakes/oh-my-codex/` as a new independent helper flake for the upstream `oh-my-codex` project.
 
 **Non-Goals:**
@@ -70,11 +70,11 @@ The upstreams are similar in intent but not identical in packaging shape. The ex
 
 **Alternatives:** Never re-export helper flakes from the root flake, or require all helper flakes to be re-exported. Rejected because the first forbids a useful convenience pattern and the second weakens the independence boundary.
 
-For this change specifically, `oh-my-cloudcode` and `oh-my-codex` are important enough to justify root re-exports for their installation-oriented package outputs.
+For this change specifically, `oh-my-cloudecode` and `oh-my-codex` are important enough to justify root re-exports for their installation-oriented package outputs.
 
-### 6. Vendor the existing oh-my-claudecode flake as `oh-my-cloudcode`
+### 6. Vendor the existing oh-my-claudecode flake as `oh-my-cloudecode`
 
-**Decision:** Bring the existing flake at `https://github.com/Larusso/oh-my-claudecode-flake` into this repo as `flakes/oh-my-cloudcode/`, updating its public-facing identifiers, descriptions, and documentation from `claudecode` to `cloudcode` where the hosted helper-flake identity is exposed.
+**Decision:** Bring the existing flake at `https://github.com/Larusso/oh-my-claudecode-flake` into this repo as `flakes/oh-my-cloudecode/`, updating its public-facing identifiers, descriptions, and documentation from `claudecode` to `cloudecode` where the hosted helper-flake identity is exposed.
 
 **Rationale:** The packaging work already exists and is directly usable. Importing it avoids redoing solved work while letting this repo present the helper flake under the preferred name.
 
@@ -84,19 +84,19 @@ For this change specifically, `oh-my-cloudcode` and `oh-my-codex` are important 
 
 **Decision:** Add `flakes/oh-my-codex/` as a separate helper flake that packages the upstream `Yeachan-Heo/oh-my-codex` repository. The flake should stay independently usable and may expose more than one package output where useful, such as a full CLI-oriented package and a lighter files-oriented package.
 
-**Rationale:** `oh-my-codex` serves the same class of need as `oh-my-cloudcode`, but the upstream implementation differs. Treating it as a sibling helper flake, rather than forcing it into the template system or into the same exact package shape, keeps the design honest.
+**Rationale:** `oh-my-codex` serves the same class of need as `oh-my-cloudecode`, but the upstream implementation differs. Treating it as a sibling helper flake, rather than forcing it into the template system or into the same exact package shape, keeps the design honest.
 
-**Alternatives:** Defer `oh-my-codex` to a later change, or require it to match the `oh-my-cloudcode` output surface exactly. Rejected because the user wants it in scope now and because the upstreams are similar, not identical.
+**Alternatives:** Defer `oh-my-codex` to a later change, or require it to match the `oh-my-cloudecode` output surface exactly. Rejected because the user wants it in scope now and because the upstreams are similar, not identical.
 
 ### 8. Re-export the installation-oriented helper packages from the root flake
 
-**Decision:** The root flake should re-export the installation-oriented package outputs for both helper flakes: the default package and the files-only package for `oh-my-cloudcode`, and the default package plus a files-only package for `oh-my-codex`.
+**Decision:** The root flake should re-export the installation-oriented package outputs for both helper flakes: the default package and the files-only package for `oh-my-cloudecode`, and the default package plus a files-only package for `oh-my-codex`.
 
 **Rationale:** These are the concrete helper flakes this repo intends to host and make easy to consume. Root re-exports provide a smoother installation path without undermining the helper flakes' independent structure.
 
 **Alternatives:** Require users to target only `./flakes/<name>` paths. Rejected because the user explicitly wants easier installation from the root.
 
-### 9. Mirror the cloudcode README style for codex
+### 9. Mirror the cloudecode README style for codex
 
 **Decision:** `flakes/oh-my-codex/README.md` should follow the same broad structure as the current `oh-my-claudecode` packaging README: package list, usage via flake input, direct package consumption examples, and update/build guidance adapted to `oh-my-codex`.
 
@@ -107,15 +107,15 @@ For this change specifically, `oh-my-cloudcode` and `oh-my-codex` are important 
 - **[Risk]** Contributors may assume every flake in the repo belongs in template automation. **Mitigation:** Document that only `templates/` participates in the template interface and tests.
 - **[Risk]** `flakes/` could become a miscellaneous dumping ground. **Mitigation:** Define it narrowly for small standalone flakes that do not warrant separate repositories.
 - **[Risk]** Optional root re-exports could blur whether helper flakes are independent or root-managed. **Mitigation:** State that direct use of the subflake remains the primary interface and root re-exports are convenience-only.
-- **[Risk]** Renaming `oh-my-claudecode` to `oh-my-cloudcode` could leave inconsistent identifiers in package names, docs, or comments. **Mitigation:** Treat rename consistency as part of the implementation checklist and review public-facing strings.
-- **[Risk]** `oh-my-codex` packaging may be more complex than `oh-my-cloudcode` because the upstream includes both Node and Rust components. **Mitigation:** Define the helper flake contract around independently usable outputs and iterate on package breadth as needed during implementation.
+- **[Risk]** Renaming `oh-my-claudecode` to `oh-my-cloudecode` could leave inconsistent identifiers in package names, docs, or comments. **Mitigation:** Treat rename consistency as part of the implementation checklist and review public-facing strings.
+- **[Risk]** `oh-my-codex` packaging may be more complex than `oh-my-cloudecode` because the upstream includes both Node and Rust components. **Mitigation:** Define the helper flake contract around independently usable outputs and iterate on package breadth as needed during implementation.
 - **[Risk]** Root re-export names could become awkward or inconsistent between the two helper flakes. **Mitigation:** Define explicit exported package names during implementation and document them in the root README.
 - **[Trade-off]** Helper flakes do not get an immediate shared automation contract. **Mitigation:** Leave helper-flake validation for later, once real helper flakes exist and common needs are clearer.
 
 ## Migration Plan
 
 1. Create the `flakes/` directory for standalone helper flakes.
-2. Import and rename the existing `oh-my-claudecode` flake as `flakes/oh-my-cloudcode/`.
+2. Import and rename the existing `oh-my-claudecode` flake as `flakes/oh-my-cloudecode/`.
 3. Create `flakes/oh-my-codex/` for the `Yeachan-Heo/oh-my-codex` upstream.
 4. Re-export the selected install-oriented helper packages from the root flake.
 5. Update root documentation and conventions to describe the broader repo scope and list the hosted helper flakes.

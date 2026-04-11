@@ -1,0 +1,13 @@
+# Nix build results
+result
+result-*
+
+# Nix evaluation cache
+.direnv/
+.envrc.local
+
+# Editor
+.idea/
+.vscode/
+*.swp
+*.swo
