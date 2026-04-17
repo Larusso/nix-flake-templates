@@ -7,7 +7,7 @@ let
     pname = "oh-my-claudecode";
     inherit version src nodejs;
 
-    npmDepsHash = "sha256-Tge6Fme3j0asQUeIYjUn49xaQBHdTQCVwTP+5JGej5s=";
+    npmDepsHash = "sha256-fNL4UlmQPL52FgH5wFR8epG540I4p+99ggsTbit5b4Q=";
 
     dontNpmBuild = true; # dist/ is already built in the upstream repo
 
