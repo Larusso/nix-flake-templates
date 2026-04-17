@@ -2,6 +2,12 @@ MIT License
 
 Copyright (c) 2026 Manfred Endres
 
+This LICENSE applies only to the helper flake / packaging work contained in
+this directory. It does not alter, replace, or claim authorship of the
+referenced upstream project, which remains separately attributed to its
+upstream author(s), including Yeachan Heo, under the upstream project's own
+license terms.
+
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
