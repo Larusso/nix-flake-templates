@@ -36,14 +36,14 @@ Helper flakes live under `flakes/` as independent flakes. For easier installatio
 
 | Helper flake | Root package attrs | Description |
 |---|---|---|
-| `flakes/oh-my-cloudecode` | `.#oh-my-cloudecode`, `.#oh-my-cloudecode-files` | Packaging flake for the `oh-my-claudecode` upstream under the hosted name `oh-my-cloudecode` |
+| `flakes/oh-my-claudecode` | `.#oh-my-claudecode`, `.#oh-my-claudecode-files` | Packaging flake for the `oh-my-claudecode` upstream under the hosted name `oh-my-claudecode` |
 | `flakes/oh-my-codex` | `.#oh-my-codex`, `.#oh-my-codex-files` | Packaging flake for the `oh-my-codex` upstream |
 
 Examples:
 
 ```bash
 # Build the main packaged helper
-nix build .#oh-my-cloudecode
+nix build .#oh-my-claudecode
 
 # Build files-only helper assets
 nix build .#oh-my-codex-files

@@ -48,4 +48,4 @@ The helper flake at `flakes/oh-my-codex/` SHALL include a `README.md` that is si
 #### Scenario: README covers package and usage guidance
 
 - **WHEN** `flakes/oh-my-codex/README.md` is inspected
-- **THEN** it documents the helper flake's packages, installation/consumption examples, and maintenance workflow in a structure similar to the cloudecode sibling README
+- **THEN** it documents the helper flake's packages, installation/consumption examples, and maintenance workflow in a structure similar to the claudecode sibling README

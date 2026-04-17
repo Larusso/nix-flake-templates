@@ -6,16 +6,6 @@
       url = "github:Fission-AI/OpenSpec";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    oh-my-cloudecode = {
-      url = "path:./flakes/oh-my-cloudecode";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-parts.follows = "flake-parts";
-    };
-    oh-my-codex = {
-      url = "path:./flakes/oh-my-codex";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-parts.follows = "flake-parts";
-    };
   };
 
   outputs = inputs:
@@ -28,6 +18,20 @@
             buildDeps = with pkgs; [ ];
             devDeps = [ inputs.openspec.packages.${system}.default ];
             libPath = with pkgs; lib.makeLibraryPath [ ];
+            ohMyClaudecode = import ./flakes/oh-my-claudecode/packages.nix {
+              inherit pkgs lib;
+              src = import ./flakes/locked-src.nix {
+                lockFile = ./flakes/oh-my-claudecode/flake.lock;
+                inputName = "oh-my-claudecode-src";
+              };
+            };
+            ohMyCodex = import ./flakes/oh-my-codex/packages.nix {
+              inherit pkgs lib;
+              src = import ./flakes/locked-src.nix {
+                lockFile = ./flakes/oh-my-codex/flake.lock;
+                inputName = "oh-my-codex-src";
+              };
+            };
 
             mkDevShell = pkgs.mkShell {
               shellHook = ''
@@ -51,10 +55,8 @@
           in {
             devShells.default = mkDevShell;
             packages = {
-              oh-my-cloudecode = inputs.oh-my-cloudecode.packages.${system}.default;
-              oh-my-cloudecode-files = inputs.oh-my-cloudecode.packages.${system}.oh-my-cloudecode-files;
-              oh-my-codex = inputs.oh-my-codex.packages.${system}.default;
-              oh-my-codex-files = inputs.oh-my-codex.packages.${system}.oh-my-codex-files;
+              inherit (ohMyClaudecode.packages) oh-my-claudecode oh-my-claudecode-files;
+              inherit (ohMyCodex.packages) oh-my-codex oh-my-codex-files;
             };
           };
       };

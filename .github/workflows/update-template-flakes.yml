@@ -36,10 +36,8 @@ jobs:
             fi
           done
 
-          echo "==> Refreshing root flake.lock and helper-flake path inputs"
-          nix flake lock \
-            --update-input oh-my-cloudecode \
-            --update-input oh-my-codex
+          echo "==> Refreshing root flake.lock"
+          nix flake lock
           echo "==> Finished flake lock updates"
 
       - name: Run repo flake tests with hash auto-heal

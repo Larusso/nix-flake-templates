@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        check: [openspec, rust, rust-bin, rust-lib, rust-openspec, rust-bin-openspec, rust-lib-openspec, oh-my-cloudecode, oh-my-codex]
+        check: [openspec, rust, rust-bin, rust-lib, rust-openspec, rust-bin-openspec, rust-lib-openspec, oh-my-claudecode, oh-my-codex]
     steps:
       - uses: actions/checkout@v4
 

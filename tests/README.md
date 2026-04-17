@@ -11,7 +11,7 @@ Each checked flake surface in the repo has its own folder under `tests/` with a 
 
 From the **repository root**:
 
-- **One checked flake**: `./tests/openspec/test.sh`, `./tests/rust/test.sh`, `./tests/oh-my-cloudecode/test.sh`, `./tests/oh-my-codex/test.sh`, etc.
+- **One checked flake**: `./tests/openspec/test.sh`, `./tests/rust/test.sh`, `./tests/oh-my-claudecode/test.sh`, `./tests/oh-my-codex/test.sh`, etc.
 - **All repo flake checks**: `./tests/run-all.sh`
 - **Build-only** (skip content tests): `SKIP_CONTENT_TESTS=1 ./tests/openspec/test.sh`
 
@@ -47,9 +47,9 @@ CI runs the same tests on push and PR (matrix, one job per checked flake surface
   - **Build**: The template flake evaluates and its default devShell builds (`nix flake check`).
   - **Content**: `nix flake new -t path:repo#rust-lib-openspec <temp-dir>` is run; then we verify (1) `rustc`, `cargo`, and `openspec` are on PATH (stable + nightly), (2) `nix build` produces library files (`.so`/`.dylib`/`.a`) in `result/lib/`, and (3) the generated project flake does not expose a `templates` output.
 
-- **oh-my-cloudecode** (`tests/oh-my-cloudecode/test.sh`)
-  - **Direct flake**: `nix flake show path:repo/flakes/oh-my-cloudecode`, `nix build path:repo/flakes/oh-my-cloudecode#default`, and `nix build path:repo/flakes/oh-my-cloudecode#oh-my-cloudecode-files`.
-  - **Root re-export**: `nix build path:repo#oh-my-cloudecode` and `nix build path:repo#oh-my-cloudecode-files`.
+- **oh-my-claudecode** (`tests/oh-my-claudecode/test.sh`)
+  - **Direct flake**: `nix flake show path:repo/flakes/oh-my-claudecode`, `nix build path:repo/flakes/oh-my-claudecode#default`, and `nix build path:repo/flakes/oh-my-claudecode#oh-my-claudecode-files`.
+  - **Root re-export**: `nix build path:repo#oh-my-claudecode` and `nix build path:repo#oh-my-claudecode-files`.
 
 - **oh-my-codex** (`tests/oh-my-codex/test.sh`)
   - **Direct flake**: `nix flake show path:repo/flakes/oh-my-codex`, `nix build path:repo/flakes/oh-my-codex#default`, and `nix build path:repo/flakes/oh-my-codex#oh-my-codex-files`.

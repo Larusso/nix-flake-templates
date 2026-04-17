@@ -7,12 +7,12 @@ The repo SHALL provide GitHub Actions coverage for helper flakes hosted under `f
 #### Scenario: Helper flakes are in CI matrix
 
 - **WHEN** the CI workflow is inspected after this change
-- **THEN** it includes `oh-my-cloudecode` and `oh-my-codex` in the matrix of checked repo flakes
+- **THEN** it includes `oh-my-claudecode` and `oh-my-codex` in the matrix of checked repo flakes
 
 #### Scenario: Helper-flake test scripts run from repo root
 
 - **WHEN** the workflow runs helper-flake jobs
-- **THEN** it executes `./tests/oh-my-cloudecode/test.sh` and `./tests/oh-my-codex/test.sh` from the repository root
+- **THEN** it executes `./tests/oh-my-claudecode/test.sh` and `./tests/oh-my-codex/test.sh` from the repository root
 
 ### Requirement: Test layout covers helper flakes
 
@@ -21,4 +21,4 @@ The repo SHALL organize helper-flake tests under `tests/` using the same folder-
 #### Scenario: Helper-flake test folders exist
 
 - **WHEN** the repository is inspected after this change
-- **THEN** `tests/oh-my-cloudecode/test.sh` and `tests/oh-my-codex/test.sh` exist
+- **THEN** `tests/oh-my-claudecode/test.sh` and `tests/oh-my-codex/test.sh` exist
