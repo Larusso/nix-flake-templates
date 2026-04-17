@@ -2,7 +2,7 @@
 
 ### Requirement: oh-my-cloudecode helper flake is hosted under flakes
 
-The repository SHALL provide an independent helper flake at `flakes/oh-my-cloudecode/` derived from the existing repository `https://github.com/Larusso/oh-my-claudecode-flake`.
+The repository SHALL provide an independent helper flake at `flakes/oh-my-cloudecode/` that packages the upstream project `https://github.com/Yeachan-Heo/oh-my-claudecode`.
 
 #### Scenario: Helper flake directory exists
 

@@ -21,17 +21,19 @@
         let
           src = inputs.oh-my-claudecode-src;
           version = (builtins.fromJSON (builtins.readFile "${src}/package.json")).version;
+          nodejs = pkgs.nodejs_22;
 
           # Full package: installs npm deps (including native modules like
           # better-sqlite3 and @ast-grep/napi) and exposes the omc CLI.
           # dist/ and bridge/*.cjs are pre-built upstream, so we skip npm build.
           #
           # To get the correct npmDepsHash, run:
-          #   nix build .#oh-my-claudecode 2>&1 | grep "got:"
+          #   nix build .#oh-my-cloudecode 2>&1 | grep "got:"
           # and paste the hash below.
           oh-my-cloudecode = pkgs.buildNpmPackage {
             pname = "oh-my-cloudecode";
             inherit version src;
+            inherit nodejs;
 
             npmDepsHash = "sha256-Tge6Fme3j0asQUeIYjUn49xaQBHdTQCVwTP+5JGej5s=";
 
@@ -52,7 +54,7 @@
 
               mkdir -p "$out/bin"
               for bin in omc oh-my-claudecode omc-cli; do
-                makeWrapper ${pkgs.nodejs_22}/bin/node "$out/bin/$bin" \
+                makeWrapper ${nodejs}/bin/node "$out/bin/$bin" \
                   --add-flags "$dest/bridge/cli.cjs" \
                   --set NODE_PATH "$dest/node_modules"
               done
@@ -80,6 +82,8 @@
             dontBuild = true;
 
             installPhase = ''
+              runHook preInstall
+
               local dest="$out/lib/oh-my-claudecode"
               mkdir -p "$dest"
               # Copy directories and files that are present in the git checkout.
@@ -89,6 +93,8 @@
               cp -r .claude-plugin "$dest/"
               cp .mcp.json "$dest/"
               cp README.md LICENSE "$dest/"
+
+              runHook postInstall
             '';
 
             meta = with lib; {
@@ -105,7 +111,7 @@
           };
 
           devShells.default = pkgs.mkShell {
-            packages = [ oh-my-cloudecode pkgs.nodejs_22 ];
+            packages = [ oh-my-cloudecode nodejs ];
           };
         };
 

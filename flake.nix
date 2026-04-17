@@ -8,9 +8,13 @@
     };
     oh-my-cloudecode = {
       url = "path:./flakes/oh-my-cloudecode";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-parts.follows = "flake-parts";
     };
     oh-my-codex = {
       url = "path:./flakes/oh-my-codex";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-parts.follows = "flake-parts";
     };
   };
 

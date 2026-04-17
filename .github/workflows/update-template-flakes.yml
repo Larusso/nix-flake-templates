@@ -74,7 +74,8 @@ jobs:
             fi
 
             echo "==> Attempting fixed-output hash auto-heal from captured log"
-            if ! ./scripts/autoheal-fixed-output-hashes.sh "$log_file"; then
+            if ! nix shell nixpkgs#ripgrep nixpkgs#findutils nixpkgs#gnugrep nixpkgs#perl -c \
+              ./scripts/autoheal-fixed-output-hashes.sh "$log_file"; then
               echo "Tests failed and no auto-healable fixed-output hash mismatches were found" >&2
               exit 1
             fi

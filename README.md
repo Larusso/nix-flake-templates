@@ -58,7 +58,7 @@ nix build ./flakes/oh-my-codex#default
 nix develop
 ```
 
-Then run `./tests/run-all.sh` (or `./tests/openspec/test.sh` for the OpenSpec template only) to verify templates. CI runs these tests on push and PR (Linux, matrix per template); a scheduled workflow keeps template flake locks up to date.
+Then run `./tests/run-all.sh` (or `./tests/openspec/test.sh` for the OpenSpec template only) to verify repo flakes. CI runs repo flake tests on push and PR, and a scheduled workflow updates template and helper-flake locks together.
 
 Helper flakes remain directly usable from `./flakes/<name>`, and selected helper packages are forwarded through the root flake as convenience package attrs.
 

@@ -19,10 +19,12 @@
         let
           src = inputs.oh-my-codex-src;
           version = (builtins.fromJSON (builtins.readFile "${src}/package.json")).version;
+          nodejs = pkgs.nodejs_22;
 
           oh-my-codex = pkgs.buildNpmPackage {
             pname = "oh-my-codex";
             inherit version src;
+            inherit nodejs;
 
             npmDepsHash = "sha256-Zh2EuEFwnICJDe+xu4QzDrHoKbq4QY4ixMer26orIYs=";
 
@@ -36,7 +38,7 @@
               cp -r . "$dest/"
 
               mkdir -p "$out/bin"
-              makeWrapper ${pkgs.nodejs_22}/bin/node "$out/bin/omx" \
+              makeWrapper ${nodejs}/bin/node "$out/bin/omx" \
                 --add-flags "$dest/dist/cli/omx.js" \
                 --set NODE_PATH "$dest/node_modules"
 
@@ -85,7 +87,7 @@
           };
 
           devShells.default = pkgs.mkShell {
-            packages = [ oh-my-codex pkgs.nodejs_22 ];
+            packages = [ oh-my-codex nodejs ];
           };
         };
 

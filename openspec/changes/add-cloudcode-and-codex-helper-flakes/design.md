@@ -10,10 +10,10 @@ That means the design problem is mainly about repository boundaries and document
 
 This change also has two concrete targets:
 
-- `oh-my-cloudecode`, imported from the existing repo `Larusso/oh-my-claudecode-flake` and renamed from `claudecode` to `cloudecode` for the hosted helper-flake identity in this repo
+- `oh-my-cloudecode`, packaged directly from the upstream repo `Yeachan-Heo/oh-my-claudecode` and renamed from `claudecode` to `cloudecode` for the hosted helper-flake identity in this repo
 - `oh-my-codex`, a new helper flake for the upstream project `Yeachan-Heo/oh-my-codex`
 
-The upstreams are similar in intent but not identical in packaging shape. The existing `oh-my-claudecode` flake already packages both a full CLI build and a files-only output. `oh-my-codex` is a mixed Node/Rust project with a distributable `omx` CLI and reusable on-disk assets, so the new flake should follow the same broad pattern where practical: a directly usable helper flake with clear package outputs and no dependence on the root template interface.
+The upstreams are similar in intent but not identical in packaging shape. `oh-my-claudecode` can be packaged as both a full CLI build and a files-only output. `oh-my-codex` is a mixed Node/Rust project with a distributable `omx` CLI and reusable on-disk assets, so the new flake should follow the same broad pattern where practical: a directly usable helper flake with clear package outputs and no dependence on the root template interface.
 
 ## Goals / Non-Goals
 
@@ -23,7 +23,7 @@ The upstreams are similar in intent but not identical in packaging shape. The ex
 - Preserve the current `templates/` layout and template interface unchanged.
 - Document the distinction between templates and helper flakes at the repo level.
 - Make it clear that helper flakes are hosted in the repo without being exposed as template outputs.
-- Add `flakes/oh-my-cloudecode/` by importing the existing `oh-my-claudecode` flake content and renaming its hosted identity to `oh-my-cloudecode`.
+- Add `flakes/oh-my-cloudecode/` by packaging the upstream `oh-my-claudecode` project directly and renaming its hosted identity to `oh-my-cloudecode`.
 - Add `flakes/oh-my-codex/` as a new independent helper flake for the upstream `oh-my-codex` project.
 
 **Non-Goals:**
@@ -72,13 +72,13 @@ The upstreams are similar in intent but not identical in packaging shape. The ex
 
 For this change specifically, `oh-my-cloudecode` and `oh-my-codex` are important enough to justify root re-exports for their installation-oriented package outputs.
 
-### 6. Vendor the existing oh-my-claudecode flake as `oh-my-cloudecode`
+### 6. Package upstream oh-my-claudecode directly as `oh-my-cloudecode`
 
-**Decision:** Bring the existing flake at `https://github.com/Larusso/oh-my-claudecode-flake` into this repo as `flakes/oh-my-cloudecode/`, updating its public-facing identifiers, descriptions, and documentation from `claudecode` to `cloudecode` where the hosted helper-flake identity is exposed.
+**Decision:** Add `flakes/oh-my-cloudecode/` as a local helper flake that packages `https://github.com/Yeachan-Heo/oh-my-claudecode` directly, updating its public-facing identifiers, descriptions, and documentation from `claudecode` to `cloudecode` where the hosted helper-flake identity is exposed.
 
-**Rationale:** The packaging work already exists and is directly usable. Importing it avoids redoing solved work while letting this repo present the helper flake under the preferred name.
+**Rationale:** The hosted flake needs to be independent in this repo, but it does not need to preserve the exact structure of the earlier Larusso packaging repository. Packaging upstream directly keeps the source of truth obvious while still presenting the helper flake under the preferred name.
 
-**Alternatives:** Keep the old `claudecode` name in this repo, or reference the external flake without vendoring it. Rejected because the user explicitly wants the renamed identity hosted here and because a local helper flake fits the new repo scope.
+**Alternatives:** Vendor the older `Larusso/oh-my-claudecode-flake` repository or keep the old `claudecode` name in this repo. Rejected because the implementation here packages upstream directly and the user explicitly wants the renamed hosted identity.
 
 ### 7. Model `oh-my-codex` as a sibling helper flake with the same independence boundary
 

@@ -2,7 +2,7 @@
 
 - [x] 1.1 Create a top-level `flakes/` directory for standalone helper flakes
 - [x] 1.2 Add a minimal placeholder or README in `flakes/` so the directory purpose is explicit in the repo
-- [x] 1.3 Add `flakes/oh-my-cloudecode/` as an independent helper flake derived from `Larusso/oh-my-claudecode-flake`
+- [x] 1.3 Add `flakes/oh-my-cloudecode/` as an independent helper flake that packages `Yeachan-Heo/oh-my-claudecode`
 - [x] 1.4 Add `flakes/oh-my-codex/` as an independent helper flake for `Yeachan-Heo/oh-my-codex`
 
 ## 2. Helper Flake Packaging
