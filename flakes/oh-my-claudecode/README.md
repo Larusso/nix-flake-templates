@@ -60,7 +60,7 @@ The upstream commit is pinned in `flake.lock`. To update to the latest upstream 
 nix flake update oh-my-claudecode-src
 ```
 
-After updating, re-run `nix build .#oh-my-claudecode` and update `npmDepsHash` in `flake.nix` if the build reports a hash mismatch.
+After updating, re-run `nix build .#oh-my-claudecode` and update `npmDepsHash` in `packages.nix` if the build reports a hash mismatch.
 
 ## Building locally
 
