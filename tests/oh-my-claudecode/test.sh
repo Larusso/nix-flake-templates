@@ -6,7 +6,7 @@ REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$REPO_ROOT"
 
 echo "==> oh-my-claudecode helper flake: flake show"
-nix flake show "path:$REPO_ROOT/flakes/oh-my-claudecode" "$@"
+nix flake show "path:$REPO_ROOT/flakes/oh-my-claudecode"
 
 echo "==> oh-my-claudecode helper flake: direct files-only build"
 nix build "path:$REPO_ROOT/flakes/oh-my-claudecode#oh-my-claudecode-files" --no-link "$@"

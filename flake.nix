@@ -41,7 +41,7 @@
                 echo ""
                 echo "Development commands:"
                 echo "  ./tests/openspec/test.sh             # run OpenSpec template tests"
-                echo "  ./tests/run-all.sh                   # run all template tests"
+                echo "  ./tests/run-all.sh                   # run all repo flake tests"
                 echo "  nix flake new -t path:.#openspec <dir>   # create a new OpenSpec project"
                 echo ""
                 echo "OpenSpec (this repo):"

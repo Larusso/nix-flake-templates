@@ -36,9 +36,9 @@ jobs:
             fi
           done
 
-          echo "==> Refreshing root flake.lock"
-          nix flake lock
-          echo "==> Finished flake lock updates"
+          echo "==> Updating root flake inputs"
+          nix flake update
+          echo "==> Finished flake updates"
 
       - name: Run repo flake tests with hash auto-heal
         run: |
@@ -72,9 +72,22 @@ jobs:
             fi
 
             echo "==> Attempting fixed-output hash auto-heal from captured log"
-            if ! nix shell nixpkgs#ripgrep nixpkgs#findutils nixpkgs#gnugrep nixpkgs#perl -c \
-              ./scripts/autoheal-fixed-output-hashes.sh "$log_file"; then
-              echo "Tests failed and no auto-healable fixed-output hash mismatches were found" >&2
+            set +e
+            nix shell nixpkgs#ripgrep nixpkgs#findutils nixpkgs#gnugrep nixpkgs#perl -c \
+              ./scripts/autoheal-fixed-output-hashes.sh "$log_file"
+            heal_status=$?
+            set -e
+
+            if [[ "$heal_status" -eq 0 ]]; then
+              :
+            elif [[ "$heal_status" -eq 3 ]]; then
+              echo "Tests failed and no fixed-output hash mismatches were found in the captured log" >&2
+              exit 1
+            elif [[ "$heal_status" -eq 4 ]]; then
+              echo "Tests failed and hash mismatches were found, but no .nix files were updated" >&2
+              exit 1
+            else
+              echo "Fixed-output hash auto-heal failed with exit code ${heal_status}" >&2
               exit 1
             fi
 

@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+readonly EXIT_NO_MISMATCH=3
+readonly EXIT_NO_UPDATE=4
+
 if [[ $# -ne 1 ]]; then
   echo "usage: $0 <log-file>" >&2
   exit 2
@@ -30,7 +33,7 @@ mapfile -t mismatches < <(
 
 if [[ ${#mismatches[@]} -eq 0 ]]; then
   echo "No fixed-output hash mismatches found in $log_file" >&2
-  exit 1
+  exit "$EXIT_NO_MISMATCH"
 fi
 
 changed=0
@@ -76,5 +79,5 @@ done < <(printf '%s\n' "${mismatches[@]}")
 
 if [[ "$changed" -eq 0 ]]; then
   echo "Hash mismatches were found, but no files were updated" >&2
-  exit 1
+  exit "$EXIT_NO_UPDATE"
 fi
