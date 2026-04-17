@@ -18,16 +18,30 @@
             buildDeps = with pkgs; [ ];
             devDeps = [ inputs.openspec.packages.${system}.default ];
             libPath = with pkgs; lib.makeLibraryPath [ ];
+            ohMyClaudecode = import ./flakes/oh-my-claudecode/packages.nix {
+              inherit pkgs lib;
+              src = import ./flakes/locked-src.nix {
+                lockFile = ./flakes/oh-my-claudecode/flake.lock;
+                inputName = "oh-my-claudecode-src";
+              };
+            };
+            ohMyCodex = import ./flakes/oh-my-codex/packages.nix {
+              inherit pkgs lib;
+              src = import ./flakes/locked-src.nix {
+                lockFile = ./flakes/oh-my-codex/flake.lock;
+                inputName = "oh-my-codex-src";
+              };
+            };
 
             mkDevShell = pkgs.mkShell {
               shellHook = ''
                 echo "┌────────────────────────────────────────────────────────────┐"
-                echo "│  Template hub - Development Environment                    │"
+                echo "│  Templates + helper flakes - Development Environment      │"
                 echo "└────────────────────────────────────────────────────────────┘"
                 echo ""
                 echo "Development commands:"
-                echo "  ./tests/openspec/test.sh             # run OpenSpec template tests"
-                echo "  ./tests/run-all.sh                   # run all template tests"
+                echo "  ./tests/openspec/test.sh             # run repo flake tests for the OpenSpec template"
+                echo "  ./tests/run-all.sh                   # run all repo flake tests"
                 echo "  nix flake new -t path:.#openspec <dir>   # create a new OpenSpec project"
                 echo ""
                 echo "OpenSpec (this repo):"
@@ -40,6 +54,10 @@
             };
           in {
             devShells.default = mkDevShell;
+            packages = {
+              inherit (ohMyClaudecode.packages) oh-my-claudecode oh-my-claudecode-files;
+              inherit (ohMyCodex.packages) oh-my-codex oh-my-codex-files;
+            };
           };
       };
     in

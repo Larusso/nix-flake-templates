@@ -1,4 +1,4 @@
-name: Nix template tests
+name: Nix repo flake tests
 
 on:
   push:
@@ -12,12 +12,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        template: [openspec, rust, rust-bin, rust-lib, rust-openspec, rust-bin-openspec, rust-lib-openspec]
+        check: [openspec, rust, rust-bin, rust-lib, rust-openspec, rust-bin-openspec, rust-lib-openspec, oh-my-claudecode, oh-my-codex]
     steps:
       - uses: actions/checkout@v4
 
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@v16
 
-      - name: Run template tests
-        run: ./tests/${{ matrix.template }}/test.sh
+      - name: Run repo flake tests
+        run: ./tests/${{ matrix.check }}/test.sh
