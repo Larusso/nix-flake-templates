@@ -95,9 +95,20 @@ jobs:
             echo "==> Re-running repo flake tests after auto-healing fixed-output hashes"
           done
 
+      - name: Create GitHub App token for PR automation
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          # Provide these secrets in repo settings:
+          # - AUTO_PR_APP_ID
+          # - AUTO_PR_APP_PRIVATE_KEY
+          app-id: ${{ secrets.AUTO_PR_APP_ID }}
+          private-key: ${{ secrets.AUTO_PR_APP_PRIVATE_KEY }}
+
       - name: Create PR if there are changes
         uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1
         with:
+          token: ${{ steps.app-token.outputs.token }}
           branch: chore/update-repo-flakes
           commit-message: "chore: update repo flake locks"
           title: "chore: update repo flake locks"
