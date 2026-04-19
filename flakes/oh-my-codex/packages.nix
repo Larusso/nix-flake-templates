@@ -7,7 +7,7 @@ let
     pname = "oh-my-codex";
     inherit version src nodejs;
 
-    npmDepsHash = "sha256-Zh2EuEFwnICJDe+xu4QzDrHoKbq4QY4ixMer26orIYs=";
+    npmDepsHash = "sha256-zBcay5NgEnpnCZd7+KUQFnuPBUo2QZxvPLEMIsgb+F4=";
 
     nativeBuildInputs = [ pkgs.makeWrapper ];
 
